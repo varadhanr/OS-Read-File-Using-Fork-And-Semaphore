@@ -1,0 +1,186 @@
+I have a little cunning mind that you were an asshsddjkc djc dcd cdcdjcndcndcjnd cdcdndncjdncjdddddddddddddddddddddkssssskkkkkkiiiiiiiiiiiiiiiiiiiiiiiiiiissssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmqqqqqqqqqqqqqqqqqqqqqqqqqqqqqth the popularity of e-commerce, posting online product reviews expressing customer’s sentiment or opinion towards products has grown exponentially. Sentiment analysis is a computational method that plays an essential role in automating the extraction of subjective information i.e. customer’s sentiment or opinion from online product reviews. Two approaches commonly used in Sentiment analysis tasks are supervised approaches and lexicon-based approaches. In supervised approaches, Sentiment analysis is seen as a text classification task. The result depends not only on the robustness of the machine learning algorithm but also on the utilized features. Bag-of-word is a common utilized features. As a statistical feature, bag-of-word does not take into account semantic of words. Previous research has indicated the potential of semantic in supervised SA task. To augment the result of sentiment analysis, this paper proposes a method to extract text features named sentence level features (SLF) and domain sensitive features (DSF) which take into account semantic of words in both sentence level and domain level of product reviews. A word sense disambiguation based method was adapted to extract SLF. For every similarity employed in generating SLF, the SentiCircle-based method was enhanced to generate DSF. Results of the experiments indicated that our proposed semantic features i.e. SLF and SLF + DSF favorably increase the performance of supervised sentiment analysis on product reviews.
+Introduction
+
+The exponential growth of e-commerce has triggered it to become a rich source of information nowadays. On e-commerce, customers provide a qualitative evaluation in the form of an online review that describes their opinions on a specific product [1]. With a huge number of OPRs, manual processing is not an efficient task. Sentiment analysis (SA) technique emerges in response to the requirement of processing OPRs in speed [2]. In terms of product review analysis, SA which is also named Opinion Mining can be defined as a task of recognizing customer’s opinion or sentiment toward the products or the product features [3] that can be categorized into positive, negative, or neutral responses [4]. SA plays an important role to automate the extraction of subjective information i.e. sentiment embodied in OPRs. The success of SA application on product reviews will in turn help customers in suggesting about buying a certain product [5] based on the analysis of OPRs. Meanwhile, for companies and online marketers, they can make use SA technique to foresee customer satisfaction toward a certain product [6]. Two major approaches commonly employed for SA tasks on product reviews are lexicon-based approaches and ML-based approaches [7]. In extracting opinions or sentiments from the text data, lexicon-based methods rely on a sentiment lexicon e.g. SentiwordNet [8], SO-CAL [9], MPQA subjectivity lexicon [10], Harvard general inquirer, Bing Liu’s opinion lexicon [11], SenticNet [12], and NRC emotion lexicon [13]. Sentiment lexicon is a dictionary of precompiled sentiment terms [14]. Sentiment term is term, commonly verb and adjective, representing the sentiment of the text document. In brief, lexicon-based method extract all sentiment terms for any given text and assign their sentiment value using sentiment lexicon. Meanwhile, ML-based techniques rely on ML algorithms and see SA as a regular text classification task. Text classification task assigns a piece of text data into several predefined classes involving ML algorithms [15]. In terms of SA task, ML-based techniques classify text document into one out of three classes namely positive class, neutral class, and negative class. For a given set of training text data, ML algorithms build a model based on the extracted features of a labeled text. The model is then utilized to classify unlabeled text. The result of supervised SA task is therefore influenced by the robustness of both extracted text features and ML algorithms. Mostly, recent works [16,17,18,19] dealing with supervised SA concerned more on the extension of the employed ML algorithms instead of the development of robust text features. We briefly overview those works on “Related work” section. Concerning on the extraction of text features is therefore still challenging task in the area of supervised SA.
+
+Referring to the previously research gap, the motivation for this study comprises:
+
+    1.
+    
+        Enhancing the result of supervised SA by proposing a method to extract robust text features for supervised SA task.
+	    2.
+	    
+	        Evaluating the performance of the proposed text features using several ML-algorithms and feature selection methods.
+		
+		In proposing the method to extract text features for supervised SA, we consider the finding reported by [3]. Rintyarna [3] highlighted the importance of semantics for SA task. Taking into account semantics of words is important for SA since the same term appears in different text data may reveals different meaning i.e. different sentiment value. In turn, capturing sementics is potential to augment the result of Sentiment Analysis task. In this study, we present a method to extract text features capturing semantic in sentence level and domain level of product reviews. We introduce two feature sets namely sentence level feature (SLF) and domain sensitive feature (DSF). For extracting SLF, a WSD based technique was adapted [20]. And for extracting DSF, a Senti-Circle based method was enhanced. We arrange several scenarios of experiment using several ML algorithms and feature selection methods to evaluate our proposed features compared with common features employed for SA task i.e. BOW. We utilized Waikato Environment for Knowledge Analysis (WEKA) for the implementation of ML-algorithms and feature selection methods. The result of experiment indicated that our proposed features outperformed BOW.
+		
+		The rest of the manuscript is arranged in the following sections. “Related work” section reviews state of the art study related with this work. “Proposed method” section describes the proposed method for extracting SLF and DLF. We explore the result of experiment and the discussion in “Experimental results and discussion” section. Finally we summarize the result of this work in “Conclusion” section.
+		Related work
+		
+		Using BOW, [16] performed an SA task on an Amazon product review dataset. RFSVM, a hybrid method that combines Random Forest (RF) and Support Vector Machine (SVM), was employed to make use of the capabilities of both classifiers. Precision, recall, F-Measure, and accuracy were used as the performance metrics to evaluate the proposed method compared with the baseline methods i.e. RF and SVM. Using instances of 500 positive datasets and 500 negative datasets, the result of the experiment showed that RFSVM outperformed the baseline methods in terms of all three performance metrics.
+		
+		A word embedding-based sentiment classification is proposed [17]. Using google toolkit word2vec, a continuous bag-of-words (CBOW) model and a Skip-gram model were generated in order to produce meaningful features. For representing the document, the sum of weighted word embeddings was used. Combined with SVM, this work proposed an extension of the SVM classifier, called SVM-WE. The method was evaluated using four datasets i.e. RT-s, CR, RT-2k, and IDBM. The result of the experiment indicated that the proposed method performed slightly better compared with the baseline method.
+		
+		Another work [18] proposed a set of 13 sentiment features for supervised SA in Twitter dataset classification. Features F1 to F8 were generated based on three sentiment lexicons, i.e. SenticNet, SentiWordNet, and NRC Emotion Lexicon. Features F9 to F13 were generated using a seed word list i.e. Subjective Words. Two datasets, namely TaskA Twitter and TaskB Twitter, were employed to validate feature performance in classification. The Naïve Bayes classifier was used as performance metric to calculate its accuracy. The best accuracy achieved by the proposed features was 75.60%.
+		
+		In order to analyze social media content, Yoo [19] proposed a system to predict user sentiment. For representing the text data, the work adopted a two-dimensional representation of word2vec. The model for the sentiment analysis task was built using Convolutional Neural Network for Sentence Classification (CNN) by making use of TensorFlow, an open-source library for various dataflow programming tasks. Validated using the Sentiment140 dataset, containing 800,000 positive documents and 800,000 negative documents, the proposed model outperformed th baseline method i.e. Naïve Bayes, SVM, and Random Forest.
+		
+		As an utmost advanced topic in the field of Natural Language Processing (NLP), many approaches have been developed for SA application [21]. Among the approaches is called Aspect Based Sentiment Analysis (ABSA). The main task of ABSA is inferring the sentiment polarity toward a specific target called aspect within a given piece of text data. In terms of product review analysis, it is useful for determining the product features that require improvement [22]. In the following paragraphs we briefly review several works discussing ABSA.
+		
+		A method called joint aspect-based sentiment topic (JABST) has been introduced [23]. It proposed a unified framework to perform common ABSA task including aspect extraction and sentiment polarity identification. The study made use graphical model to describe relationship among aspects, opinion, sentiment polarity and granularity. A maximum entropy based model called MaxEnt-JABST has also been proposed to improve the word distribution description. In the evaluation step, two real world datasets from [24] were employed. The evaluation step focused on two points i.e.: (1) comparing the quality of the extracted topics and (2) calculating the precision of aspects and opinions. The results of experiment confirmed that the JABST significantly outperformed baseline model.
+		
+		To perform ABSA tasks on customer reviews, a novel system called W2VLDA was presented by [25] based on the combination of a topic modeling approach and a Maximum Entropy classifier. The system performed the main tasks of ABSA simultaneously. Employing Brown cluster to train the model of Maximum Entropy classifier, W2VLDA was able to separate aspect-terms and opinion-words into word classes without any language dictionary. The work conducted experiment to evaluate the performance of different subtasks using different datasets. Restaurant review dataset [26] containing domain-related aspects was used to evaluate aspect category classification. Dataset on the domain of Laptops and Digital-SLR [24] containing English reviews was employed to evaluate sentiment classification subtask. Meanwhile, SemEval-2016 task 5 from [27] was used to perform multilingual experiments. Compared with the other LDA-based approaches as baseline methods, the system achieved slightly better results.
+		
+		Another work [28] focused on three subtasks of ABSA i.e.: sentiment extraction, aspect assignment, and aspect category determination. The work contributed to improving the functionality of the current state-of-the-art topic model approach by adding product description as another dimension of the model. Two extended topic model-based ABSA methods were presented: Seller-aided Aspect-based Sentiment Model (SA-ASM) and Seller-aided Product-based Sentiment Model (SA-PSM). SA-ASM outperformed two baseline methods on sentiment classification and aspect assignment. Meanwhile, SA-PSM performed better compared with the baseline methods on subtask aspect categorization.
+		
+		Aspect extraction which aims at identifying the object of user’s opinion from online reviews holds an important role in ABSA approach. Motivated by the vulnerability of syntactic patterns-based approach due to its dependency to dependency parser, a study [29] proposed two-fold rule-based model (TF-RBM) to perform ABSA tasks. Sequential pattern-based rules (SPR) [30] was firstly employed to extract all aspects and opinions. Since many extracted aspects were not related to the product, the study performed a pruning method based on normalized Google distance calculation to improve aspect extraction accuracy. The last step of the proposed method was called concept extraction i.e. domain specific opinions that reveal user’s sentiment.
+		Proposed method
+		
+		The steps of the proposed method are: (1) capturing semantic values in product review texts at the sentence level and extracting the sentence level features (SLF), (2) capturing semantic values in product reviews influenced by different product domain extracting the domain sensitive features (DSF). Since there are many notations employed in this section, we present details of the notations in Table 1.
+		Table 1 Details of notations
+		Full size table
+		Extracting sentence level feature (SLF)
+		
+		Capturing sentence-level semantic is important since the same words that appear in different piece of text may share different meaning i.e. different sentiment value as described in Table 1. In Table 2, we describe that the word “enjoy” has different sense i.e. different sentiment value when it appears in different sentence. This characteristic is known as polysemy. The task aims at assigning correct sentiment value to a word with respect to its local context i.e. sentence. We describe the step of extracting SLF in Fig. 1.
+		Table 2 Example of different sentiment of the word “enjoy”
+		Full size table
+		Fig. 1
+		figure1
+		
+		The calculation of 𝑓𝑝𝑜𝑠𝐷,𝑓𝑛𝑒𝑔𝐷,
+		and 𝑓𝑛𝑒𝑢𝐷
+		
+		Full size image
+		
+		To capture semantic value in product reviews at sentence level i.e. extracting SLF, product review document 𝐷
+		is split into review sentence 𝑆𝑘. The process is done at sentence level. Suppose 𝑆𝑘 consists of 𝑛 words, 𝑤1,𝑤2,…𝑤𝑛. The aim of this stage is to find contextual sentiment value 𝑐𝑠𝑖 of word 𝑤𝑖 associated with sentiment score 𝑠𝑖 picked from SentiwordNet [8]. In the next step, part of speech (POS) tagging is done, which is part of common text processing, including filtering. It is a process of assigning a part of speech value to a word in a piece of text [31]. Since we employ SentiwordNet [8], which is based on WordNet [32], POS tagging is important for selecting the correct sense of 𝑤𝑖 in accordance with its POS tag [33]. WordNet [32] itself employs 4 POS tags, i.e. noun, verb, adjective, and adverb. POS tagging is important for the next step, i.e. extracting 𝑤𝑠𝑗𝑖 from 𝑤𝑖. For every extracted 𝑤𝑠𝑗𝑖 its associated sentiment value is picked from SentiwordNet [8]. Every 𝑤𝑠𝑗𝑖 has three different sentiment scores, namely 𝑠𝑝𝑜𝑠𝑗𝑖,𝑠𝑛𝑒𝑔𝑗𝑖, and 𝑠𝑛𝑒𝑢𝑗𝑖
+		
+		.
+		
+		The similarity between 𝑤𝑠𝑗𝑖
+		is calculated using WordNet similarity algorithms, i.e. from Lin, Jiang and Conrath, Resnik, Leacock and Chodorow, and Wu and Palmer. Adapted Lesk [34] is also employed. Similarity between word senses, denoted as 𝑠𝑖𝑚𝑐𝑑𝑎𝑏, means similarity value of 𝑤𝑠𝑐𝑎 and 𝑤𝑠𝑑𝑏. They are calculated for all possible combinations, as can be seen in Table 3. The calculation adopts the WSD technique firstly introduced by [20]. For simple, the task illustrated in Table 4 can be assumed as building undirected weighted graph of every review sentence with 𝑤𝑠𝑗𝑖 as the vertex and 𝑠𝑖𝑚𝑐𝑑𝑎𝑏
+		
+		as the weight of the edges of the graph.
+		Table 3 Similarity between word senses
+		Full size table
+		Table 4 Word senses along with their sentiment score
+		Full size table
+		
+		The results of the previous step are the three different sentiment scores from SentiWordNet [8]. For example, the result of processing the review sentence ‘The screen is great’, can be seen in Table 4. After the POS tagging step, including filtering, there are two words, i.e. ‘screen’ with POS tag noun and ‘great’ with POS tag adjective.
+		
+		To assign 𝑐𝑠𝑖
+		of 𝑤𝑖, the indegree score of 𝑤𝑠𝑗𝑖, denoted by 𝐼𝑛(𝑤𝑠𝑗𝑖), is calculated. Indegree score is important to assign contextual sense of 𝑤𝑖. Among the senses of 𝑤𝑖 i.e. 𝑤𝑠𝑗𝑖, a sense with the highest Indegree score is assigned as contextual sense of 𝑤𝑖. Contextual sense is a sense where 𝑐𝑠𝑝𝑜𝑠𝑖,𝑐𝑠𝑛𝑒𝑔𝑖, and 𝑐𝑠𝑛𝑒𝑢𝑖 are picked from the collection of SentiwordNet and assigned as contextual sentiment value of 𝑤𝑖. For the above case there are three indegree scores for 𝑤1, i.e. 𝑑𝑒𝑔(𝑤𝑠11),𝑑𝑒𝑔(𝑤𝑠21) and 𝑑𝑒𝑔(𝑤𝑠31) while there are two indegree scores for 𝑤2, i.e. 𝑑𝑒𝑔(𝑤𝑠12) and 𝑑𝑒𝑔(𝑤𝑠22)
+		
+		. They are calculated as follows:
+		𝑑𝑒𝑔(𝑤𝑠11)=𝑠𝑖𝑚1112+𝑠𝑖𝑚1212
+		𝑑𝑒𝑔(𝑤𝑠21)=𝑠𝑖𝑚2112+𝑠𝑖𝑚2212
+		𝑑𝑒𝑔(𝑤𝑠31)=𝑠𝑖𝑚3112+𝑠𝑖𝑚3212.
+		
+		The next task is determining the selected sense of 𝑤𝑖
+		by calculating max{𝑑𝑒𝑔(𝑤𝑠11),𝑑𝑒𝑔(𝑤𝑠21),𝑑𝑒𝑔(𝑤𝑠31)}. The sense that has the highest indegree score is selected as the contextual sense of 𝑤𝑖 and its sentiment score is labeled with 𝑐𝑠𝑝𝑜𝑠𝑖, 𝑐𝑠𝑛𝑒𝑔𝑖, or 𝑐𝑠𝑛𝑒𝑢𝑖. Once these values have been assigned for every 𝑤𝑖, the last procedure in this step is calculating the numeric feature value at the sentence level, 𝑓𝑝𝑜𝑠𝑆𝑘,𝑓𝑛𝑒𝑔𝑆𝑘, and 𝑓𝑛𝑒𝑢𝑆𝑘
+		
+		, using Eqs. (1), (2) and (3).
+		𝑓𝑝𝑜𝑠𝑆𝑘=∑𝑖=1𝑛𝑐𝑠𝑝𝑜𝑠𝑖
+		(1)
+		𝑓𝑛𝑒𝑔𝑆𝑘=∑𝑖=1𝑛𝑐𝑠𝑝𝑜𝑠𝑖
+		(2)
+		𝑓𝑛𝑒𝑢𝑆𝑘=∑𝑖=1𝑛𝑐𝑠𝑝𝑜𝑠𝑖
+		(3)
+		
+		where 𝑛
+		is the number of words in 𝑆𝑘. To calculate the numeric feature value at review document level, Eqs. (4), (5), and (6) are employed. For 𝑜 is the number of sentences in review document 𝐷, 𝑓𝑝𝑜𝑠𝐷,𝑓𝑛𝑒𝑔𝐷, and 𝑓𝑛𝑒𝑢𝐷
+		
+		are calculated as follows:
+		𝑓𝑝𝑜𝑠𝐷=∑𝑜𝑘=1𝑓𝑝𝑜𝑠𝑆𝑘𝑘
+		(4)
+		𝑓𝑛𝑒𝑔𝐷=∑𝑜𝑘=1𝑓𝑛𝑒𝑔𝑆𝑘𝑘
+		(5)
+		𝑓𝑛𝑒𝑢𝐷=∑𝑜𝑘=1𝑓𝑛𝑒𝑢𝑆𝑘𝑘
+		(6)
+		Capturing domain sensitive features (DSF)
+		
+		In this step, we adopt Senticircle approach [35]. The main principle of Senticircle suggest that terms exist in the same context tend to share the same semantics. In terms of product review, we define the context as product domain. In consequence, the same terms that appears in different product domains tend to share different meaning. In terms of SA, sharing different meanings means carrying different sentiment. For example, ‘long battery life’ in Electronics domain express positive sentiment, while ‘long stopping time’ in the Automobile domain share negative sentiment.
+		𝑚𝑎𝑥𝑆𝑖𝑚=𝑎𝑟𝑔𝑚𝑎𝑥𝑆𝑖𝑚𝑖𝑆𝑖𝑚𝑖(𝑤𝑑,𝑤𝑖)
+		(7)
+		𝑆𝑖𝑚𝑖=2∗𝐷𝑒𝑝𝑡ℎ(𝐿𝐶𝑆(𝑤𝑑,𝑤𝑖))𝐷𝑒𝑝𝑡ℎ(𝑤𝑑)+𝐷𝑒𝑝𝑡ℎ(𝑤𝑖).
+		(8)
+		
+		To generate the DSF, several formulas are provided. Figure 2 describes the steps that need to be carried out. The first three steps, including POS tagging, are the same as in the first step of the method. The next step is determining pivot word 𝑝𝑤𝑘
+		of sentence 𝑆𝑘. A pivot word is a representative of the domain word at sentence level [3]. In this work, 𝑝𝑤𝑘 is defined as the noun with the closest similarity to the domain word. For measuring similarity, Wu and Palmer’s algorithm is employed [36]. For 𝑤𝑑 as the domain word (e.g. Smartphone, Book, Beauty, or Computers), the similarity between 𝑤𝑑 and 𝑤𝑖 is computed using (7) and (8). The pivot word from 𝑤𝑖 that has the highest value, 𝑚𝑎𝑥𝑆𝑖𝑚
+		
+		, is selected.
+		Fig. 2
+		figure2
+		
+		The calculation of 𝑓𝑥𝐷
+		and 𝑓𝑦𝐷
+		
+		Full size image
+		
+		In Eq. (8), 𝐿𝐶𝑆
+		means the Least Common Subsumer between the first sense of 𝑤𝑑 and the contextual sense of 𝑤𝑖 in the WordNet [32] taxonomy. Since the method from [37] was adopted in this stage, 𝑟𝑖 is computed to represent the distance between 𝑤𝑖 and 𝑝𝑤𝑘 using Eq. (9). In (9), 𝑁 is the total number of words in the corpus of product reviews and 𝑁𝑤𝑖 is the total number of 𝑤𝑖
+		
+		.
+		𝑟𝑖=𝑓(𝑝𝑤𝑘,𝑤𝑖)log𝑁𝑁𝑤𝑖
+		(9)
+		
+		To generate the SentiCircle representation of 𝑤𝑖
+		, we need to assign 𝜃𝑖
+		
+		using Eq. (10).
+		𝜃𝑖=𝑐𝑡𝑠𝑖∗𝜋𝑟𝑎𝑑
+		(10)
+		
+		In Eq. (10), 𝑐𝑡𝑠𝑖
+		
+		is determined using rule (11).
+		𝑐𝑡𝑠𝑖={𝑐𝑠𝑝𝑜𝑠𝑖𝑖𝑓|𝑐𝑠𝑝𝑜𝑠𝑖|>|𝑐𝑠𝑛𝑒𝑔𝑖|𝑐𝑠𝑛𝑒𝑔𝑖𝑖𝑓|𝑐𝑠𝑛𝑒𝑔𝑖|>|𝑐𝑠𝑝𝑜𝑠𝑖|
+		(11)
+		
+		The last step is to generate the SentiCircle representation by using (12) and (13). The sentiment value of a word is represented using the values of 𝑥
+		and 𝑦 in a Cartesian coordinate system as seen in Fig. 3. To calculate the numeric value of the features in sentence 𝑆𝑘, Eqs. (14) and (15) are introduced, where 𝑁𝑤𝑆𝑘 is the number of words in 𝑆𝑘
+		
+		.
+		𝑥𝑖=𝑟𝑖cos𝜃𝑖
+		(12)
+		𝑦𝑖=𝑟𝑖sin𝜃𝑖
+		(13)
+		𝑓𝑥𝑆𝑘=∑𝑁𝑤𝑆𝑘𝑖=1𝑥𝑖𝑁𝑤𝑆𝑘
+		(14)
+		𝑓𝑦𝑆𝑘=∑𝑁𝑤𝑆𝑘𝑖=1𝑦𝑖𝑁𝑤𝑆𝑘
+		(15)
+		Fig. 3
+		figure3
+		
+		Representation of Senticircle in Cartesian coordinate system
+		Full size image
+		
+		In Fig. 4, we provide an example of how Senticircle adjust a sentiment value of the same word “long” but from different domain e.g. Electronics and Automobile. The word “long” is picked from review document of the dataset as presented in Table 5. In Table 5, we also provide the variable value of the Senticircle of the word “long”. In the first domain e.g. Electronics, the word “long” has relatively neutral value while in the second domain e.g. Automobile, this word has highly positive value. The value of 𝑥𝑖
+		and 𝑦𝑖
+		
+		presented in the table is the value after normalization.
+		Fig. 4
+		figure4
+		
+		Example of how Senticircle adjust Sentiment value of the word “long” of two different domains
+		Full size image
+		Table 5 Variable value of the word “long” calculated for both domains
+		Full size table
+		
+		To represent a document with its semantic features, the numeric value of the features in the review document is calculated using Eqs. (16) and (17). In both equations, 𝑜
+		is the number of sentences in 𝐷. For every similarity algorithm, a set of features is generated, i.e.: 𝑓𝑝𝑜𝑠𝐷, 𝑓𝑛𝑒𝑔𝐷, 𝑓𝑛𝑒𝑢𝐷, 𝑓𝑥𝐷, and 𝑓𝑦𝐷
+		
+		. Since 5 similarity algorithms are employed (Wu and Palmer, Jiang and Conrath, Leacock and Chodorow, Resnik, and Li), the complete set of review document features consists of 25 features, as listed in Table 6. In the table, we describe the notation of the features, the details and the type of the features. F1–F15 is local features. Meanwhile, F16–F25 is domain sensitive features.
+		𝑓𝑥𝐷=∑𝑜𝑘=1𝑆𝑘𝑜
+		(16)
+		𝑓𝑦𝐷=∑𝑜𝑘=1𝑆𝑘𝑜
+		(17)
+		Table 6 Details of the features
+		Full size table
+		Experimental results and discussion
+		Experimental setup
+		
+		An experiment was conducted to evaluate the features extracted by the proposed method employing several machine learning algorithms available in WEKA [38], i.e. Bayesian Network, Naïve Bayes, Naïve Bayes Multinomial, Logistic, Multilayer Perceptron, J48, Random forest, and Random tree. Another experiment was conducted using feature selection method. In the implementation, WEKA feature selection methods were employed, i.e.: ClassifierAttributeEval (CA), GainRatioAttributeEval (GR), InfoGainAttributeEval, OneRAttributeEval (OneR) and PrincipalComponent (PCA). Precision, recall and F-measure were calculated as performance metrics. Although important, extending Machine learning algorithms is not part of our contribution. A key point of this work is to demonstrate as well as to evaluate the performance of our proposed semantic features. For that reason, in all experiment we employ default setting of the ML parameters provided by WEKA to avoid bias in the result of experiment. The experiments were performed on IBM System X3400 M3 Tower Server.
+		Dataset description
+		
+		The experiment was conducted using Amazon product data [39] downloaded from http://jmcauley.ucsd.edu/data/amazon/. The collection contains product review dataset grabbed from Amazon including 142.8 millions reviews. The experiment was conducted on a small subset of this collection, i.e. the electronics and automobile datasets. The number of sample for building model and running evaluation follow the rule of tenfold cross-validation. The dataset contains reviewerID, asin, reviewerName, helpfulness, reviewText, overall, summary, unixReviewTime, and reviewTime as described in Table 7. We pick the review text for experiment from reviewText. To build the ground truth, we established a label out of three sentiment categories i.e. positive, negative, and neutral for every reviewText based on its overall score. Datasets with overall score 1–2 were assigned as negative reviews. Meanwhile, reviewTexts with overall score 4–5 were labeled p:
