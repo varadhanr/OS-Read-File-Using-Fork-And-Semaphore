@@ -1,0 +1,28 @@
+
+File Name : ../contents/file1.txt, Process ID : 41771
+Character :a , count: 5 
+Character :b , count: 3 
+Character :c , count: 0 
+Character :d , count: 4 
+Character :e , count: 15 
+Character :f , count: 3 
+Character :g , count: 2 
+Character :h , count: 5 
+Character :i , count: 8 
+Character :j , count: 0 
+Character :k , count: 0 
+Character :l , count: 6 
+Character :m , count: 3 
+Character :n , count: 7 
+Character :o , count: 9 
+Character :p , count: 3 
+Character :q , count: 0 
+Character :r , count: 6 
+Character :s , count: 16 
+Character :t , count: 14 
+Character :u , count: 4 
+Character :v , count: 2 
+Character :w , count: 4 
+Character :x , count: 0 
+Character :y , count: 2 
+Character :z , count: 0 
